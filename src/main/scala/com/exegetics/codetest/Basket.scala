@@ -3,11 +3,17 @@ package com.exegetics.codetest
 import com.exegetics.codetest.fruit.Fruit
 
 case class Basket(items: Seq[Fruit]) {
-  //calculate the total cost of the fruits
-  def calculateTotal(): Double = {
-    items.map {
+  //calculate the total cost of the fruits with associated offers (default = no offers
+  def calculateTotal(offers: Seq[Basket => Double] = Seq()): Double = {
+    val totalCostWithoutDiscounts = items.map {
       _.price
     }.sum
+
+    //apply each offer and sum discounts
+    val discount = offers.map {
+      _ (this)
+    }.sum
+    return totalCostWithoutDiscounts - discount
   }
 
 }
