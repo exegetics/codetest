@@ -2,6 +2,8 @@ package com.exegetics.codetest
 
 import com.exegetics.codetest.fruit.Fruit
 
+import scala.math.BigDecimal.RoundingMode
+
 case class Basket(items: Seq[Fruit]) {
   //calculate the total cost of the fruits with associated offers (default = no offers
   def calculateTotal(offers: Seq[Basket => Double] = Seq()): Double = {
@@ -13,7 +15,7 @@ case class Basket(items: Seq[Fruit]) {
     val discount = offers.map {
       _ (this)
     }.sum
-    return totalCostWithoutDiscounts - discount
+    return BigDecimal(totalCostWithoutDiscounts - discount).setScale(2, RoundingMode.HALF_UP).toDouble
   }
 
 }
